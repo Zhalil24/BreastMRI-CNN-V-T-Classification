@@ -100,7 +100,7 @@ Sonuçlar Drive'a yazılır: `/content/drive/MyDrive/breast_mri_standard_results
 
 Her model ve her fold için:
 
-- train, validation ve test confusion matrix'i (başlıkta N yazar) ve ROC eğrisi,
+- train, validation ve test için ayrı ayrı confusion matrix (başlıkta N yazar), ROC eğrisi ve metrik çubuk grafiği,
 - accuracy ve loss eğrileri, epoch geçmişi (`history.csv`),
 - Accuracy, Precision, Recall (Sensitivity), Specificity, F1, ROC-AUC, Loss ve TN/FP/FN/TP sayıları (`metrics.csv`, `result.json`),
 - istatistiksel testler (ör. McNemar) için örnek bazlı test tahminleri (`test_predictions.csv`).
