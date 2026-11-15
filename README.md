@@ -1,248 +1,129 @@
 # Breast MRI Classification with CNN and Vision Transformers
 
-Bu depo, meme MRI görüntülerinin **Benign** ve **Malignant** olarak ikili sınıflandırılmasında CNN ve vision transformer tabanlı modellerin karşılaştırılması amacıyla hazırlanmıştır.
+Bu depo, meme MRI görüntülerini **Benign** ve **Malignant** olarak ikili sınıflandırmada CNN ve vision transformer tabanlı modelleri karşılaştırmak için hazırlanmıştır.
 
-Çalışmanın temel amacı:
+Bütün deneyler **tek bir notebook** ile ve **tek bir standart protokol** altında yürütülür:
 
-- CNN ve vision transformer modellerini ortak bir baseline protokolünde karşılaştırmak,
-- optimize edilmemiş modellerin referans performanslarını belirlemek,
-- vision transformer modellerini mimariye daha uygun tekniklerle optimize etmek,
-- bütün modellerin fold bazlı train, validation ve bağımsız test sonuçlarını aynı metriklerle raporlamaktır.
+```
+standard_5fold_experiments.ipynb
+```
 
-## Depodaki Notebook'lar
+Karşılaştırılan dört deney grubu şunlardır:
 
-### `BaseLineCNNModels.ipynb`
+| Grup (`GROUP`) | Modeller |
+|---|---|
+| `baseline_cnn` | ResNet34, DenseNet121, EfficientNet-B0, MobileNetV2, InceptionV3 |
+| `baseline_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
+| `optimized_cnn` | ResNet34, DenseNet121, EfficientNet-B0, MobileNetV2, InceptionV3 |
+| `optimized_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
 
-Optimize edilmemiş CNN modellerinin ortak baseline protokolüyle eğitildiği notebook'tur.
-
-İçerdiği modeller:
-
-- ResNet34
-- DenseNet121
-- EfficientNet-B0
-- MobileNetV2
-- InceptionV3
-
-Bu notebook'ta ImageNet ön eğitimli modellerin feature extractor/backbone bölümleri dondurulur ve yalnızca yeni classification head eğitilir. Amaç, ek optimizasyon teknikleri uygulanmadan CNN mimarilerinin yalın transfer learning performanslarını ölçmektir.
-
-### `BaseLineVITModels.ipynb`
-
-Optimize edilmemiş vision transformer tabanlı modellerin baseline eğitimini içerir.
-
-İçerdiği modeller:
-
-- ViT-B/16
-- ViT-B/32
-- ViT-L/16
-- ViT-L/32
-- Swin Transformer Tiny (Swin-T)
-
-CNN baseline ile adil karşılaştırma yapabilmek için aynı veri bölme, epoch, etkin batch size, optimizer, learning rate, loss, model seçimi ve değerlendirme yaklaşımı kullanılır. Pretrained encoder dondurulur ve yalnızca classification head eğitilir.
-
-### `vision_transformers_baseline_equal_protocol.ipynb`
-
-Vision transformer baseline deneylerini CNN baseline ile eşit ve açık biçimde tanımlanmış deney protokolünde çalıştıran notebook'tur. Beş modelin 5-fold eğitimini, best-epoch seçimini, fold bazlı değerlendirmesini ve standart çıktı üretimini tek akışta yürütür.
-
-Bu notebook, transformer baseline sonuçlarının CNN sonuçlarıyla doğrudan karşılaştırılabilmesini sağlayan ana eşit-protokol uygulamasıdır.
-
-### `vision_transformers_baseline_from_vit_l16_onward.ipynb`
-
-`vision_transformers_baseline_equal_protocol.ipynb` çalışmasının yarıda kesilmesi nedeniyle oluşturulan devam notebook'udur.
-
-Bu dosya:
-
-- daha önce tamamlanan modelleri yeniden eğitmeden çalışmaya devam etmek,
-- ViT-L/16 modelini Fold 1'den Fold 5'e kadar yeniden/tam olarak çalıştırmak,
-- ardından ViT-L/32 ve Swin-T baseline deneylerini tamamlamak
-
-amacıyla kullanılır.
-
-Bu notebook yeni veya farklı bir deney protokolü değildir. Ana baseline notebook'uyla aynı koşulları kullanır ve eksik kalan deneyleri tamamlar. Sonuçlar yorumlanırken iki notebook'tan gelen çıktılar tek bir baseline deney dizisinin parçaları olarak ele alınmalıdır.
-
-### `vision_transformers_vit_specific_optimized.ipynb`
-
-Vision transformer modellerinin, ortak veri ve değerlendirme düzeni korunarak transformer mimarisine daha uygun tekniklerle optimize edildiği notebook'tur.
-
-İçerdiği modeller:
-
-- ViT-B/16
-- ViT-B/32
-- ViT-L/16
-- ViT-L/32
-- Swin-T
-
-Bu deneyde yalnızca classification head eğitimi yerine modelin son transformer blokları da fine-tuning işlemine açılır. Böylece pretrained temsil korunurken modelin meme MRI veri setine uyarlanması hedeflenir.
+Swin-T eğitilip kaydedilir. Makaleye dahil edilip edilmeyeceği ayrı bir karardır (`INCLUDE_SWIN`).
 
 ## Veri Seti
 
-Notebook'lar veri setini Google Drive'daki RAR arşivinden okur:
+[Breast MRI Tumor Classification Dataset (Kaggle)](https://www.kaggle.com/datasets/abenjelloun/breast-mri-tumor-classification-dataset). Veri seti TCIA "Breast Diagnosis" koleksiyonundan türetilmiştir.
 
-```text
-/content/drive/MyDrive/data_set_zip/breast_mri_dataset.rar
-```
+| Kaggle klasörü | Benign | Malignant | Toplam |
+|---|---|---|---|
+| train | 8.413 | 8.413 | 16.826 |
+| validation | 1.797 | 1.797 | 3.594 |
+| test | 1.802 | 1.802 | 3.604 |
+| **Toplam** | **12.012** | **12.012** | **24.024** |
 
-Beklenen klasör yapısı:
+Notebook veriyi `kagglehub` ile indirir ya da Drive'daki rar dosyasını açar. `train`, `validation` ve `test` klasörlerini kendisi bulur ve görüntü sayılarını yukarıdaki değerlerle karşılaştırır. Sayılar tutmazsa çalışmayı durdurur.
 
-```text
-breast_mri_dataset/
-├── train/
-│   ├── Benign/
-│   └── Malignant/
-└── test/
-    ├── Benign/
-    └── Malignant/
-```
+## 5 Katlı Doğrulama
 
-`train` klasörü stratified 5-fold cross-validation için kullanılır. `test` klasörü eğitimden bağımsız tutulur ve her fold'un seçilen modeliyle yalnızca nihai değerlendirme amacıyla kullanılır.
+Test kümesi (3.604) hiçbir zaman eğitime ya da model seçimine karışmaz. Kaggle'daki train (16.826) ve validation (3.594) klasörleri birleştirilerek 20.420 görüntülük bir havuz oluşturulur ve 5 fold bu havuzdan üretilir.
 
-> ROC-AUC, sensitivity ve diğer pozitif sınıf metriklerinin doğru yorumlanabilmesi için `Malignant` sınıfının pozitif sınıf (`1`) olduğu doğrulanmalıdır.
+| `CV_MODE` | Her fold'da train / validation / test | Açıklama |
+|---|---|---|
+| `holdout5` (varsayılan) | **16.826 / 3.594 / 3.604** | 5 tekrarlı tabakalı (stratified) hold-out, yani Monte Carlo çapraz doğrulama. Her fold'daki sayılar orijinal Kaggle ayrımıyla birebir aynıdır. Validation kümeleri fold'lar arasında kısmen örtüşebilir. |
+| `kfold` | ~16.336 / ~4.084 / 3.604 | Klasik stratified 5-fold. Her görüntü tam bir kez validation'da yer alır. |
 
-## Baseline Deney Protokolü
+Fold ataması bir kez üretilir ve `folds_<CV_MODE>.csv` dosyasına kaydedilir. **Bütün gruplar ve bütün modeller aynı fold dosyasını kullanır.** Her fold'un sınıf bazlı sayıları `fold_counts_<CV_MODE>.csv` dosyasına yazılır; makaledeki veri bölünmesi tablosu bu dosyadan alınmalıdır.
 
-CNN ve vision transformer baseline deneylerinde aşağıdaki ortak koşullar uygulanır:
+## Ortak Protokol (dört grupta da aynı)
 
-| Özellik | Baseline ayarı |
+| Ayar | Değer |
 |---|---|
-| Başlangıç ağırlıkları | ImageNet1K pretrained |
-| Transfer learning | Var |
-| Eğitilen bölüm | Yalnızca classification head |
-| Backbone/encoder | Dondurulmuş |
-| Görüntü boyutu | 224 × 224 |
-| Cross-validation | Stratified 5-fold |
-| Epoch | Her fold için 10 |
-| Batch size | 32 |
-| Optimizer | Adam |
-| Learning rate | `1e-3` |
-| Loss | CrossEntropyLoss |
-| Data augmentation | Yok |
-| Scheduler | Yok |
-| Early stopping | Yok |
-| Class weighting | Yok |
-| Label smoothing | Yok |
-| Model seçim ölçütü | En yüksek validation accuracy |
-| Random seed | 42 |
+| Başlangıç ağırlıkları | ImageNet-1K ön eğitimli (transfer learning) |
+| Görüntü boyutu / normalizasyon | 224×224 / ImageNet ortalama ve std |
+| Epoch | Her fold'da 10, early stopping yok |
+| Etkin batch | 32 |
+| Model seçimi | En düşük validation loss'u veren epoch |
+| Değerlendirme kaybı | Düz cross-entropy (label smoothing yok), bu yüzden gruplar karşılaştırılabilir |
+| Mixed precision | Açık |
+| Seed | 42 |
+| Class weighting | Yok (veri seti dengeli) |
+| Sınıflandırma başı | Dropout + Linear (2 sınıf) |
 
-Baseline modeller “sıfırdan eğitim” değildir. ImageNet ön eğitimli özellik çıkarıcılar kullanıldığı için transfer learning uygulanır; ancak yalnızca classification head güncellendiğinden full fine-tuning yapılmaz.
+## Baseline ve Optimize Edilmiş Reçeteler
 
-## ViT'e Özel Optimize Edilmiş Deney Protokolü
+Aynı gruptaki CNN ve ViT modelleri **birebir aynı reçeteyi** kullanır.
 
-Optimize edilmiş transformer deneylerinde veri seti, fold yapısı, bağımsız test kümesi ve raporlanan metrikler baseline deneyleriyle uyumludur. Eğitim stratejisi ise transformer mimarilerine daha uygun hale getirilmiştir.
+| Teknik | Baseline | Optimize |
+|---|---|---|
+| Eğitilen katmanlar | Yalnızca sınıflandırma başı (backbone donuk, BatchNorm eval modunda) | CNN: tüm katmanlar · ViT: son bloklar (aşağıda) |
+| Optimizer | Adam | AdamW |
+| Learning rate | 1e-3 | 1e-4 |
+| Weight decay | 0 | 1e-4 |
+| Scheduler | Yok | Cosine annealing (1e-4'ten 1e-6'ya) |
+| Data augmentation | Yok | Var |
+| Label smoothing | 0 | 0,1 |
+| Head dropout | 0 | 0,3 |
+| Gradient clipping | Yok | 1,0 |
 
-| Özellik | ViT'e özel optimize ayarı |
+**Augmentation (yalnızca optimize deneylerde ve yalnızca train görüntülerine):** ±15° rastgele döndürme, yatay ve dikey çevirme (p = 0,5), %5 kaydırma ve 0,95–1,05 ölçekleme, parlaklık ve kontrast ±0,15, random erasing (p = 0,15).
+
+**Optimize deneyde ince ayar kapsamı.** CNN ile ViT arasında bilerek bırakılan tek fark budur:
+
+| Model | Eğitime açılan kısım |
 |---|---|
-| Başlangıç ağırlıkları | ImageNet1K pretrained |
-| Fine-tuning | Classification head + son transformer blokları |
-| ViT-B modelleri | Son 4/12 encoder bloğu |
-| ViT-L modelleri | Son 4/24 encoder bloğu |
-| Swin-T | Son hiyerarşik stage (`features.7`) |
-| Görüntü boyutu | 224 × 224 |
-| Cross-validation | Stratified 5-fold |
-| En fazla epoch | 10 |
-| Fiziksel batch size | 4 |
-| Gradient accumulation | 8 adım |
-| Etkin batch size | 32 |
-| Optimizer | AdamW |
-| Learning rate | `3e-5` |
-| Weight decay | `1e-4` |
-| Loss | Fold bazlı weighted CrossEntropyLoss |
-| Label smoothing | `0.05` |
-| Scheduler | Cosine annealing |
-| Mixed precision | Var |
-| Gradient clipping | `1.0` |
-| Early stopping | Patience = 5 |
-| Model seçim ölçütü | En düşük validation loss |
-| Random seed | 42 |
+| CNN'ler | Tüm katmanlar (full fine-tuning) |
+| ViT-B/16, ViT-B/32 | Son 4/12 encoder bloğu, son LayerNorm ve head |
+| ViT-L/16, ViT-L/32 | Son 4/24 encoder bloğu, son LayerNorm ve head |
+| Swin-T | Son stage (`features.7`), son norm ve head |
 
-### Kullanılan data augmentation işlemleri
+Bütün ayarlar notebook'un ilk hücresinde (`COMMON`, `RECIPES`, `FT_SCOPE`, `AUGMENT`) tanımlıdır. Her grup çalıştırıldığında kullanılan ayarlar `config.json` dosyasına kaydedilir.
 
-Yalnızca training görüntülerine aşağıdaki işlemler uygulanır:
+## Sızıntı Kontrolü
 
-- Random rotation
-- Random horizontal flip
-- Random vertical flip
-- Küçük konum ve ölçek değişimleri
-- Parlaklık ve kontrast değişimleri
-- Random erasing
+Eğitime başlamadan önce bir kez şu kontroller yapılır ve sonuç `leakage_check.csv` dosyasına yazılır:
 
-Validation ve test görüntülerine augmentation uygulanmaz.
+- test ile train+val havuzu arasında birebir aynı (md5) ya da çok benzer (pHash, Hamming ≤ 2) görüntü var mı,
+- train+val havuzunun kendi içinde aynı ya da çok benzer görüntü var mı (fold'lar arası sızıntı).
 
-### Baseline ile temel farkı
+## Çıktılar
 
-Baseline deneyinde encoder tamamen dondurulur ve yalnızca head eğitilir. ViT'e özel optimize deneyde ise düşük learning rate ile son transformer katmanları kısmi olarak fine-tune edilir. Ayrıca AdamW, weight decay, augmentation, class weighting, label smoothing, cosine scheduler, mixed precision, gradient clipping ve early stopping kullanılır.
+Sonuçlar Drive'a yazılır: `/content/drive/MyDrive/breast_mri_standard_results/<CV_MODE>/<GROUP>/<Model>/Fold_<k>/`
 
-Bu nedenle optimize edilmiş deney, baseline ile aynı eğitim reçetesinin tekrarı değil; aynı veri ve değerlendirme çerçevesi üzerinde ViT mimarisine uygun bir optimizasyon senaryosudur.
+Her model ve her fold için:
 
-## 5-Fold Eğitim, Best Epoch ve Test Protokolü
+- train, validation ve test confusion matrix'i (başlıkta N yazar) ve ROC eğrisi,
+- accuracy ve loss eğrileri, epoch geçmişi (`history.csv`),
+- Accuracy, Precision, Recall (Sensitivity), Specificity, F1, ROC-AUC, Loss ve TN/FP/FN/TP sayıları (`metrics.csv`, `result.json`),
+- istatistiksel testler (ör. McNemar) için örnek bazlı test tahminleri (`test_predictions.csv`).
 
-Her model için genel süreç şöyledir:
+Her grup için `<GROUP>_results.xlsx` dosyası fold bazlı sonuçları, ortalama ± std değerlerini ve makale tablosunu içerir. Son hücre bütün grupları `ALL_RESULTS.xlsx` dosyasında birleştirir.
 
-1. Eğitim verisi, sınıf oranları korunarak beş fold'a ayrılır.
-2. Her iterasyonda dört fold training, bir fold validation için kullanılır.
-3. Model yalnızca ilgili fold'un training bölümüyle eğitilir.
-4. Her epoch sonunda train ve validation değerleri hesaplanır.
-5. Baseline deneylerinde en yüksek validation accuracy; ViT'e özel optimize deneyde en düşük validation loss sağlayan epoch seçilir.
-6. Seçilen best-epoch ağırlıkları geri yüklenir.
-7. Seçilen modelle fold'un train, validation ve bağımsız test sonuçları hesaplanır.
-8. Bu işlem beş fold için tekrarlanır ve her modelden beş ayrı test sonucu elde edilir.
-9. Fold sonuçları ayrı ayrı ve ortalama ± standart sapma biçiminde raporlanır.
+> Makalede sonuçlar **5 fold'un ortalaması ± standart sapması** olarak raporlanmalıdır. En iyi fold seçilerek raporlanmamalıdır.
 
-Test kümesi model veya epoch seçmek için kullanılmaz. Her epoch test edilmez; bağımsız test değerlendirmesi yalnızca validation sonucuyla seçilmiş fold modelinde yapılır.
+## Çalıştırma
 
-## Değerlendirme Metrikleri
+1. Notebook'u Colab'da GPU ile aç.
+2. İlk hücrede `GROUP` değerini seç. Gerekirse `MODELS = ["ViT-L-16"]` gibi tek bir model ver.
+3. Hücreleri sırasıyla çalıştır. Colab kesilirse aynı hücreleri tekrar çalıştırman yeterli; tamamlanan fold'lar atlanır.
+4. Dört grup bittiğinde son hücreyi çalıştırarak `ALL_RESULTS.xlsx` dosyasını üret.
 
-Her fold için ortak olarak aşağıdaki metrikler hesaplanır:
+Önerilen sıra: `baseline_cnn`, `baseline_vit`, `optimized_cnn`, `optimized_vit`. ViT-L modelleri en uzun sürenlerdir.
 
-- Accuracy
-- Precision
-- Recall / Sensitivity
-- F1-score
-- Specificity
-- ROC-AUC
-- Confusion matrix
-- ROC curve
+## Eski Deneyler (`legacy/`)
 
-Train, validation ve test sonuçları fold bazında kaydedilir. Model düzeyindeki özet tablolarda beş fold'un ortalama ve standart sapma değerleri raporlanır.
+`legacy/` klasöründeki notebook'lar önceki deney setidir ve sadece arşiv amacıyla tutulur. Bu notebook'larda:
 
-## Grafikler ve Tablolar
+- Kaggle'daki `validation` klasörü kullanılmamış, yalnızca `train` klasörü (16.826 görüntü) 5'e bölünmüştür. Bu yüzden her fold yaklaşık 13.461 train / 3.366 validation görüntüsünden oluşur ve orijinal veri setinin sayılarıyla tutarsızdır.
+- Gruplar arasında model seçim ölçütü, learning rate, label smoothing, early stopping ve batch ayarları farklıdır.
+- `vision_transformers_baseline_equal_protocol.ipynb` adına rağmen bir baseline deneyi değildir. Bu notebook'ta augmentation ve tam ince ayar kullanılmıştır.
 
-Notebook'lar model ve fold bazında aşağıdaki çıktıları üretir:
-
-- Epoch bazlı train–validation accuracy grafiği
-- Epoch bazlı train–validation loss grafiği
-- Train confusion matrix
-- Validation confusion matrix
-- Test confusion matrix
-- Test ROC curve
-- Fold bazlı metrik tabloları
-- Model bazlı ortalama ± standart sapma özetleri
-
-Grafikler Colab hücrelerinin altında gösterilir ve çıktı klasörüne PNG olarak kaydedilir. Tablolar hücre altında görüntülenir; ayrıca CSV ve/veya Excel biçiminde `/content` altındaki ilgili çıktı klasörüne yazılır.
-
-## Dosya Kaydetme Politikası
-
-Google Drive yalnızca veri setini okumak için kullanılır. Sonuçlar Google Drive'a kaydedilmez.
-
-Tüm deney çıktıları Colab'ın geçici dosya sistemi olan `/content` altında oluşturulur. Bu nedenle Colab oturumu kapanmadan önce notebook ve çıktı dosyaları GitHub'a veya yerel bilgisayara aktarılmalıdır. Colab oturumu sonlandırıldığında `/content` altındaki dosyalar silinebilir.
-
-## Önerilen Çalıştırma Sırası
-
-1. `BaseLineCNNModels.ipynb`
-2. `vision_transformers_baseline_equal_protocol.ipynb`
-3. Ana ViT baseline çalışması yarıda kaldıysa `vision_transformers_baseline_from_vit_l16_onward.ipynb`
-4. `vision_transformers_vit_specific_optimized.ipynb`
-
-`BaseLineVITModels.ipynb` önceki/alternatif ViT baseline notebook'u olarak saklanıyorsa, aynı modellerin sonuçlarını iki kez ana karşılaştırmaya eklememek gerekir. Makaledeki nihai baseline sonuçları için tek bir protokol ve tek bir sonuç seti esas alınmalıdır.
-
-## Bilimsel Karşılaştırma Notu
-
-Baseline CNN–ViT karşılaştırması, aynı eğitim ve değerlendirme protokolü kullanıldığı için doğrudan mimari karşılaştırma olarak sunulabilir.
-
-ViT'e özel optimize sonuçlar ise “mimariye özel optimize edilmiş transformer performansı” olarak ayrı bir deney grubu şeklinde raporlanmalıdır. Baseline CNN sonuçlarıyla karşılaştırılabilir; ancak eğitim teknikleri farklı olduğu için bu karşılaştırma yalnızca mimari üstünlük iddiası olarak yorumlanmamalıdır.
-
-Makale içinde sonuç tablolarında deney türü açıkça belirtilmelidir:
-
-- **Baseline CNN**
-- **Baseline Vision Transformer**
-- **ViT-Specific Optimized Vision Transformer**
-
-Bu ayrım, deneylerin tekrarlanabilirliğini ve sonuçların bilimsel olarak doğru yorumlanmasını sağlar.
+Makaledeki sonuçlar `standard_5fold_experiments.ipynb` ile üretilen sonuçlara göre güncellenmelidir.
