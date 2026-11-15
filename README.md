@@ -2,20 +2,17 @@
 
 Bu depo, meme MRI görüntülerini **Benign** ve **Malignant** olarak ikili sınıflandırmada CNN ve vision transformer tabanlı modelleri karşılaştırmak için hazırlanmıştır.
 
-Bütün deneyler **tek bir notebook** ile ve **tek bir standart protokol** altında yürütülür:
+Bütün deneyler **tek bir standart protokol** altında yürütülür. Dört deney grubunun her biri için ayrı bir notebook vardır ve bu dört notebook'un kodu birebir aynıdır; tek fark ilk hücredeki sabit `GROUP` satırıdır.
 
-```
-standard_5fold_experiments.ipynb
-```
+| Notebook | Grup (`GROUP`) | Modeller |
+|---|---|---|
+| `1_baseline_cnn.ipynb` | `baseline_cnn` | ResNet34, DenseNet121, EfficientNet-B0, MobileNetV2, InceptionV3 |
+| `2_baseline_vit.ipynb` | `baseline_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
+| `3_optimized_cnn.ipynb` | `optimized_cnn` | ResNet34, DenseNet121, EfficientNet-B0, MobileNetV2, InceptionV3 |
+| `4_optimized_vit.ipynb` | `optimized_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
+| `5_tum_sonuclar.ipynb` | — | Dört grubun sonuçlarını `ALL_RESULTS.xlsx` dosyasında birleştirir (GPU gerekmez) |
 
-Karşılaştırılan dört deney grubu şunlardır:
-
-| Grup (`GROUP`) | Modeller |
-|---|---|
-| `baseline_cnn` | ResNet34, DenseNet121, EfficientNet-B0, MobileNetV2, InceptionV3 |
-| `baseline_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
-| `optimized_cnn` | ResNet34, DenseNet121, EfficientNet-B0, MobileNetV2, InceptionV3 |
-| `optimized_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
+Ortak ayarlardan birini değiştirmek gerekirse (örneğin `COMMON` veya `RECIPES`) değişiklik dört notebook'a da aynı şekilde yapılmalıdır; aksi halde gruplar arasındaki standart bozulur.
 
 Swin-T eğitilip kaydedilir. Makaleye dahil edilip edilmeyeceği ayrı bir karardır (`INCLUDE_SWIN`).
 
@@ -100,23 +97,23 @@ Sonuçlar Drive'a yazılır: `/content/drive/MyDrive/breast_mri_standard_results
 
 Her model ve her fold için:
 
-- train, validation ve test confusion matrix'i (başlıkta N yazar) ve ROC eğrisi,
+- train, validation ve test için ayrı ayrı confusion matrix (başlıkta N yazar), ROC eğrisi ve metrik çubuk grafiği,
 - accuracy ve loss eğrileri, epoch geçmişi (`history.csv`),
 - Accuracy, Precision, Recall (Sensitivity), Specificity, F1, ROC-AUC, Loss ve TN/FP/FN/TP sayıları (`metrics.csv`, `result.json`),
 - istatistiksel testler (ör. McNemar) için örnek bazlı test tahminleri (`test_predictions.csv`).
 
-Her grup için `<GROUP>_results.xlsx` dosyası fold bazlı sonuçları, ortalama ± std değerlerini ve makale tablosunu içerir. Son hücre bütün grupları `ALL_RESULTS.xlsx` dosyasında birleştirir.
+Her grup notebook'u kendi `<GROUP>_results.xlsx` dosyasını üretir; bu dosya fold bazlı sonuçları, ortalama ± std değerlerini ve makale tablosunu içerir. `5_tum_sonuclar.ipynb` bütün grupları `ALL_RESULTS.xlsx` dosyasında birleştirir. Bu dosyada test, validation ve train için ortalama ± std tabloları, fold'lara göre veri bölünmesi ve hangi modelin kaç fold'u tamamladığı yer alır.
 
 > Makalede sonuçlar **5 fold'un ortalaması ± standart sapması** olarak raporlanmalıdır. En iyi fold seçilerek raporlanmamalıdır.
 
 ## Çalıştırma
 
-1. Notebook'u Colab'da GPU ile aç.
-2. İlk hücrede `GROUP` değerini seç. Gerekirse `MODELS = ["ViT-L-16"]` gibi tek bir model ver.
-3. Hücreleri sırasıyla çalıştır. Colab kesilirse aynı hücreleri tekrar çalıştırman yeterli; tamamlanan fold'lar atlanır.
-4. Dört grup bittiğinde son hücreyi çalıştırarak `ALL_RESULTS.xlsx` dosyasını üret.
+1. `1_baseline_cnn.ipynb` → `2_baseline_vit.ipynb` → `3_optimized_cnn.ipynb` → `4_optimized_vit.ipynb` notebook'larını sırayla Colab'da GPU ile aç ve bütün hücrelerini çalıştır.
+2. Colab kesilirse aynı notebook'u yeniden çalıştırman yeterli; tamamlanan fold'lar atlanır.
+3. Bir grup tek oturuma sığmazsa ilk hücrede `MODELS = ["ViT-L-16"]` gibi tek bir model ver. ViT-L modelleri en uzun sürenlerdir.
+4. Dört grup bitince `5_tum_sonuclar.ipynb` ile `ALL_RESULTS.xlsx` dosyasını üret.
 
-Önerilen sıra: `baseline_cnn`, `baseline_vit`, `optimized_cnn`, `optimized_vit`. ViT-L modelleri en uzun sürenlerdir.
+İlk notebook'ta fold ataması (`folds_holdout5.csv`) ve sızıntı kontrolü bir kez üretilir. Sonraki notebook'lar aynı dosyaları kullanır.
 
 ## Eski Deneyler (`legacy/`)
 
@@ -126,4 +123,4 @@ Her grup için `<GROUP>_results.xlsx` dosyası fold bazlı sonuçları, ortalama
 - Gruplar arasında model seçim ölçütü, learning rate, label smoothing, early stopping ve batch ayarları farklıdır.
 - `vision_transformers_baseline_equal_protocol.ipynb` adına rağmen bir baseline deneyi değildir. Bu notebook'ta augmentation ve tam ince ayar kullanılmıştır.
 
-Makaledeki sonuçlar `standard_5fold_experiments.ipynb` ile üretilen sonuçlara göre güncellenmelidir.
+Makaledeki sonuçlar yukarıdaki dört grup notebook'u ile üretilen sonuçlara göre güncellenmelidir.
