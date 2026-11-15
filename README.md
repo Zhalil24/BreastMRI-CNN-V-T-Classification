@@ -10,7 +10,8 @@ Bütün deneyler **tek bir standart protokol** altında yürütülür. Dört den
 | `2_baseline_vit.ipynb` | `baseline_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
 | `3_optimized_cnn.ipynb` | `optimized_cnn` | ResNet34, DenseNet121, EfficientNet-B0, MobileNetV2, InceptionV3 |
 | `4_optimized_vit.ipynb` | `optimized_vit` | ViT-B/16, ViT-B/32, ViT-L/16, ViT-L/32, Swin-T |
-| `5_tum_sonuclar.ipynb` | — | Dört grubun sonuçlarını `ALL_RESULTS.xlsx` dosyasında birleştirir (GPU gerekmez) |
+| `5_tum_sonuclar.ipynb` | — | Dört grubun bütün tablolarını ve grafiklerini tek klasöre ve zip'e aktarır (GPU gerekmez) |
+| `6_sizinti_analizi.ipynb` | — | Test görüntülerinin train+val'deki en yakın eşleriyle etiket uyumunu ölçer (GPU gerekmez) |
 
 Ortak ayarlardan birini değiştirmek gerekirse (örneğin `COMMON` veya `RECIPES`) değişiklik dört notebook'a da aynı şekilde yapılmalıdır; aksi halde gruplar arasındaki standart bozulur.
 
@@ -102,7 +103,14 @@ Her model ve her fold için:
 - Accuracy, Precision, Recall (Sensitivity), Specificity, F1, ROC-AUC, Loss ve TN/FP/FN/TP sayıları (`metrics.csv`, `result.json`),
 - istatistiksel testler (ör. McNemar) için örnek bazlı test tahminleri (`test_predictions.csv`).
 
-Her grup notebook'u kendi `<GROUP>_results.xlsx` dosyasını üretir; bu dosya fold bazlı sonuçları, ortalama ± std değerlerini ve makale tablosunu içerir. `5_tum_sonuclar.ipynb` bütün grupları `ALL_RESULTS.xlsx` dosyasında birleştirir. Bu dosyada test, validation ve train için ortalama ± std tabloları, fold'lara göre veri bölünmesi ve hangi modelin kaç fold'u tamamladığı yer alır.
+Her grup notebook'u kendi `<GROUP>_results.xlsx` dosyasını üretir; bu dosya fold bazlı sonuçları, ortalama ± std değerlerini ve makale tablosunu içerir. `5_tum_sonuclar.ipynb` bütün grupları `EXPORT/` klasöründe ve `EXPORT_holdout5.zip` dosyasında toplar:
+
+- `tablolar/ALL_RESULTS.xlsx`: test, validation ve train için ortalama ± std tabloları, Baseline→Optimize kazancı, 5 fold ortalama confusion matrix, eğitim süreleri, veri bölünmesi, sızıntı kontrolü ve ham veriler (ayrıca CSV)
+- `grafikler/1_karsilastirma`: metrik başına Baseline ve Optimize çubuk grafikleri, grup başına train/val/test doğruluğu
+- `grafikler/2_ortalama_confusion`: grup ve split başına 5 fold ortalama ± std confusion matrix
+- `grafikler/3_ortalama_roc`: grup başına 5 fold ortalama test ROC eğrileri
+- `grafikler/4_ortalama_ogrenme_egrileri`: accuracy ve loss eğrileri (5 fold ort. ± std)
+- `grafikler/5_fold_bazli`: her model ve fold için 11 grafik ve CSV dosyaları
 
 > Makalede sonuçlar **5 fold'un ortalaması ± standart sapması** olarak raporlanmalıdır. En iyi fold seçilerek raporlanmamalıdır.
 
@@ -111,7 +119,8 @@ Her grup notebook'u kendi `<GROUP>_results.xlsx` dosyasını üretir; bu dosya f
 1. `1_baseline_cnn.ipynb` → `2_baseline_vit.ipynb` → `3_optimized_cnn.ipynb` → `4_optimized_vit.ipynb` notebook'larını sırayla Colab'da GPU ile aç ve bütün hücrelerini çalıştır.
 2. Colab kesilirse aynı notebook'u yeniden çalıştırman yeterli; tamamlanan fold'lar atlanır.
 3. Bir grup tek oturuma sığmazsa ilk hücrede `MODELS = ["ViT-L-16"]` gibi tek bir model ver. ViT-L modelleri en uzun sürenlerdir.
-4. Dört grup bitince `5_tum_sonuclar.ipynb` ile `ALL_RESULTS.xlsx` dosyasını üret.
+4. Bir modeli baştan eğitmek gerekirse (örneğin kodda düzeltme yapıldıysa) ilk hücrede `MODELS = ["InceptionV3"]` ve `RERUN = True` yap. O modelin bu gruptaki eski sonuçları silinir, sadece o model yeniden eğitilir. İş bitince ayarları `None` / `False` olarak geri al.
+5. Dört grup bitince `5_tum_sonuclar.ipynb` ile bütün tabloları ve grafikleri dışa aktar.
 
 İlk notebook'ta fold ataması (`folds_holdout5.csv`) ve sızıntı kontrolü bir kez üretilir. Sonraki notebook'lar aynı dosyaları kullanır.
 
