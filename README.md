@@ -119,7 +119,8 @@ Her grup notebook'u kendi `<GROUP>_results.xlsx` dosyasını üretir; bu dosya f
 1. `1_baseline_cnn.ipynb` → `2_baseline_vit.ipynb` → `3_optimized_cnn.ipynb` → `4_optimized_vit.ipynb` notebook'larını sırayla Colab'da GPU ile aç ve bütün hücrelerini çalıştır.
 2. Colab kesilirse aynı notebook'u yeniden çalıştırman yeterli; tamamlanan fold'lar atlanır.
 3. Bir grup tek oturuma sığmazsa ilk hücrede `MODELS = ["ViT-L-16"]` gibi tek bir model ver. ViT-L modelleri en uzun sürenlerdir.
-4. Bir modeli baştan eğitmek gerekirse (örneğin kodda düzeltme yapıldıysa) ilk hücrede `MODELS = ["InceptionV3"]` ve `RERUN = True` yap. O modelin bu gruptaki eski sonuçları silinir, sadece o model yeniden eğitilir. İş bitince ayarları `None` / `False` olarak geri al.
+4. Bir grubu ya da bir modeli baştan eğitmek için ilk hücrede `RERUN = "bir-etiket"` ver (ör. `RERUN = "temiz-16kas"`). `MODELS = None` ise gruptaki bütün modellerin, `MODELS = ["InceptionV3"]` gibi verilirse sadece o modellerin eski sonuçları silinir. Silme her etiket için **bir kez** yapılır: Drive'a `rerun_<etiket>.done` dosyası yazılır. Colab kesilip notebook aynen yeniden çalıştırılırsa bir daha silme yapılmaz ve eğitim kaldığı fold'dan devam eder. Yeni bir temiz çalıştırma için yeni bir etiket ver.
+   Daha önce tamamlanmış ve atlanan fold'ların kaydedilmiş çıktıları (epoch geçmişi, 11 grafik ve tablo) Drive'dan okunup notebook'ta gösterilir.
 5. Dört grup bitince `5_tum_sonuclar.ipynb` ile bütün tabloları ve grafikleri dışa aktar.
 
 İlk notebook'ta fold ataması (`folds_holdout5.csv`) ve sızıntı kontrolü bir kez üretilir. Sonraki notebook'lar aynı dosyaları kullanır.
