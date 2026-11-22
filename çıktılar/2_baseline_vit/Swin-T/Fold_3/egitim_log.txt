@@ -1,0 +1,10 @@
+Swin-T | Fold 3 | Epoch 01/10 | Train loss 0.5186 acc 0.7416 | Val loss 0.4813 acc 0.7705
+Swin-T | Fold 3 | Epoch 02/10 | Train loss 0.4410 acc 0.7971 | Val loss 0.4477 acc 0.7821
+Swin-T | Fold 3 | Epoch 03/10 | Train loss 0.4089 acc 0.8199 | Val loss 0.4303 acc 0.8033
+Swin-T | Fold 3 | Epoch 04/10 | Train loss 0.3940 acc 0.8270 | Val loss 0.4048 acc 0.8141
+Swin-T | Fold 3 | Epoch 05/10 | Train loss 0.3773 acc 0.8353 | Val loss 0.3935 acc 0.8233
+Swin-T | Fold 3 | Epoch 06/10 | Train loss 0.3660 acc 0.8411 | Val loss 0.3837 acc 0.8280
+Swin-T | Fold 3 | Epoch 07/10 | Train loss 0.3582 acc 0.8466 | Val loss 0.3806 acc 0.8300
+Swin-T | Fold 3 | Epoch 08/10 | Train loss 0.3512 acc 0.8497 | Val loss 0.3808 acc 0.8306
+Swin-T | Fold 3 | Epoch 09/10 | Train loss 0.3451 acc 0.8493 | Val loss 0.3675 acc 0.8350
+Swin-T | Fold 3 | Epoch 10/10 | Train loss 0.3405 acc 0.8535 | Val loss 0.3664 acc 0.8361

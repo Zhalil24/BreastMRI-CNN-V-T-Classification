@@ -1,0 +1,6 @@
+Group,Model,Split,Accuracy,Precision,Recall (Sensitivity),Specificity,F1-Score,ROC-AUC
+baseline_cnn,ResNet34,Test,81.64 ± 0.21,83.16 ± 2.30,79.54 ± 3.35,83.74 ± 3.38,81.23 ± 0.66,89.69 ± 0.06
+baseline_cnn,DenseNet121,Test,82.41 ± 0.14,84.13 ± 2.26,80.06 ± 3.29,84.76 ± 3.10,81.97 ± 0.71,90.87 ± 0.07
+baseline_cnn,EfficientNet-B0,Test,88.70 ± 0.12,88.89 ± 1.16,88.48 ± 1.37,88.91 ± 1.47,88.67 ± 0.15,95.80 ± 0.21
+baseline_cnn,MobileNetV2,Test,86.43 ± 0.25,88.03 ± 2.23,84.46 ± 2.96,88.40 ± 2.79,86.15 ± 0.55,94.28 ± 0.18
+baseline_cnn,InceptionV3,Test,85.77 ± 0.24,86.52 ± 3.26,85.04 ± 4.33,86.49 ± 4.36,85.64 ± 0.68,93.55 ± 0.15

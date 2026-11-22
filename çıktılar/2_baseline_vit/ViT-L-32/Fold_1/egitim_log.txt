@@ -1,0 +1,10 @@
+ViT-L-32 | Fold 1 | Epoch 01/10 | Train loss 0.4837 acc 0.7619 | Val loss 0.4217 acc 0.8105
+ViT-L-32 | Fold 1 | Epoch 02/10 | Train loss 0.3821 acc 0.8346 | Val loss 0.3730 acc 0.8422
+ViT-L-32 | Fold 1 | Epoch 03/10 | Train loss 0.3461 acc 0.8524 | Val loss 0.3519 acc 0.8520
+ViT-L-32 | Fold 1 | Epoch 04/10 | Train loss 0.3212 acc 0.8638 | Val loss 0.3381 acc 0.8575
+ViT-L-32 | Fold 1 | Epoch 05/10 | Train loss 0.3078 acc 0.8692 | Val loss 0.3234 acc 0.8603
+ViT-L-32 | Fold 1 | Epoch 06/10 | Train loss 0.2931 acc 0.8771 | Val loss 0.3126 acc 0.8681
+ViT-L-32 | Fold 1 | Epoch 07/10 | Train loss 0.2857 acc 0.8821 | Val loss 0.3086 acc 0.8734
+ViT-L-32 | Fold 1 | Epoch 08/10 | Train loss 0.2759 acc 0.8857 | Val loss 0.3061 acc 0.8759
+ViT-L-32 | Fold 1 | Epoch 09/10 | Train loss 0.2694 acc 0.8899 | Val loss 0.3010 acc 0.8701
+ViT-L-32 | Fold 1 | Epoch 10/10 | Train loss 0.2642 acc 0.8916 | Val loss 0.2983 acc 0.8792

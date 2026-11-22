@@ -1,0 +1,5 @@
+,Karşılaştırma,Tür,Eşleşmesi olan görüntü sayısı
+0,test ↔ train+val,birebir aynı (md5),0
+1,test ↔ train+val,çok benzer (pHash ≤ 2),2820
+2,train+val kendi içinde,birebir aynı (md5),0
+3,train+val kendi içinde,çok benzer (pHash ≤ 2),15827

@@ -1,0 +1,10 @@
+EfficientNet-B0 | Fold 2 | Epoch 01/10 | Train loss 0.4657 acc 0.7634 | Val loss 0.2770 acc 0.8962
+EfficientNet-B0 | Fold 2 | Epoch 02/10 | Train loss 0.2662 acc 0.8898 | Val loss 0.1595 acc 0.9441
+EfficientNet-B0 | Fold 2 | Epoch 03/10 | Train loss 0.1906 acc 0.9330 | Val loss 0.1148 acc 0.9638
+EfficientNet-B0 | Fold 2 | Epoch 04/10 | Train loss 0.1550 acc 0.9517 | Val loss 0.0918 acc 0.9789
+EfficientNet-B0 | Fold 2 | Epoch 05/10 | Train loss 0.1315 acc 0.9625 | Val loss 0.0898 acc 0.9822
+EfficientNet-B0 | Fold 2 | Epoch 06/10 | Train loss 0.1141 acc 0.9726 | Val loss 0.0779 acc 0.9875
+EfficientNet-B0 | Fold 2 | Epoch 07/10 | Train loss 0.1012 acc 0.9770 | Val loss 0.0727 acc 0.9875
+EfficientNet-B0 | Fold 2 | Epoch 08/10 | Train loss 0.0935 acc 0.9811 | Val loss 0.0640 acc 0.9914
+EfficientNet-B0 | Fold 2 | Epoch 09/10 | Train loss 0.0864 acc 0.9844 | Val loss 0.0652 acc 0.9933
+EfficientNet-B0 | Fold 2 | Epoch 10/10 | Train loss 0.0872 acc 0.9842 | Val loss 0.0643 acc 0.9933
