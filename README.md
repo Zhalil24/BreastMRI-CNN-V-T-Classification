@@ -62,7 +62,7 @@ Aynı gruptaki CNN ve ViT modelleri **birebir aynı reçeteyi** kullanır.
 
 | Teknik | Baseline | Optimize |
 |---|---|---|
-| Eğitilen katmanlar | Yalnızca sınıflandırma başı (backbone donuk, BatchNorm eval modunda) | CNN: tüm katmanlar · ViT: son bloklar (aşağıda) |
+| Eğitilen katmanlar | Yalnızca sınıflandırma başı (backbone donuk, BatchNorm eval modunda) | Tüm katmanlar (CNN ve ViT için aynı) |
 | Optimizer | Adam | AdamW |
 | Learning rate | 1e-3 | 1e-4 |
 | Weight decay | 0 | 1e-4 |
@@ -74,14 +74,9 @@ Aynı gruptaki CNN ve ViT modelleri **birebir aynı reçeteyi** kullanır.
 
 **Augmentation (yalnızca optimize deneylerde ve yalnızca train görüntülerine):** ±15° rastgele döndürme, yatay ve dikey çevirme (p = 0,5), %5 kaydırma ve 0,95–1,05 ölçekleme, parlaklık ve kontrast ±0,15, random erasing (p = 0,15).
 
-**Optimize deneyde ince ayar kapsamı.** CNN ile ViT arasında bilerek bırakılan tek fark budur:
+**Optimize deneyde ince ayar kapsamı.** CNN'lerde ve ViT'lerde (Swin-T dahil) bütün katmanlar eğitilir; iki aile arasında reçete ya da kapsam farkı yoktur.
 
-| Model | Eğitime açılan kısım |
-|---|---|
-| CNN'ler | Tüm katmanlar (full fine-tuning) |
-| ViT-B/16, ViT-B/32 | Son 4/12 encoder bloğu, son LayerNorm ve head |
-| ViT-L/16, ViT-L/32 | Son 4/24 encoder bloğu, son LayerNorm ve head |
-| Swin-T | Son stage (`features.7`), son norm ve head |
+Optimize ViT grubu daha önce sadece son blokları açarak (ViT: son 4 encoder bloğu, Swin-T: son stage) da çalıştırılmıştı. O sonuçlar silinmedi; Drive'da `holdout5/_arsiv/optimized_vit__tam-ft/` klasöründe duruyor ve ince ayar kapsamının etkisini gösteren bir ablasyon olarak kullanılabilir.
 
 Bütün ayarlar notebook'un ilk hücresinde (`COMMON`, `RECIPES`, `FT_SCOPE`, `AUGMENT`) tanımlıdır. Her grup çalıştırıldığında kullanılan ayarlar `config.json` dosyasına kaydedilir.
 
@@ -120,6 +115,7 @@ Her grup notebook'u kendi `<GROUP>_results.xlsx` dosyasını üretir; bu dosya f
 2. Colab kesilirse aynı notebook'u yeniden çalıştırman yeterli; tamamlanan fold'lar atlanır.
 3. Bir grup tek oturuma sığmazsa ilk hücrede `MODELS = ["ViT-L-16"]` gibi tek bir model ver. ViT-L modelleri en uzun sürenlerdir.
 4. Bir grubu ya da bir modeli baştan eğitmek için ilk hücrede `RERUN = "bir-etiket"` ver (ör. `RERUN = "temiz-16kas"`). `MODELS = None` ise gruptaki bütün modellerin, `MODELS = ["InceptionV3"]` gibi verilirse sadece o modellerin eski sonuçları silinir. Silme her etiket için **bir kez** yapılır: Drive'a `rerun_<etiket>.done` dosyası yazılır. Colab kesilip notebook aynen yeniden çalıştırılırsa bir daha silme yapılmaz ve eğitim kaldığı fold'dan devam eder. Yeni bir temiz çalıştırma için yeni bir etiket ver.
+   Eski sonuçlar silinmez; Drive'da `holdout5/_arsiv/<grup>__<etiket>/` klasörüne taşınır.
    Daha önce tamamlanmış ve atlanan fold'ların kaydedilmiş çıktıları (epoch geçmişi, 11 grafik ve tablo) Drive'dan okunup notebook'ta gösterilir.
 5. Dört grup bitince `5_tum_sonuclar.ipynb` ile bütün tabloları ve grafikleri dışa aktar.
 
