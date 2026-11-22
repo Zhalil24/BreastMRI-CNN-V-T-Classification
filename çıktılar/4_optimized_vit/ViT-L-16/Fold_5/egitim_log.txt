@@ -1,0 +1,10 @@
+ViT-L-16 | Fold 5 | Epoch 01/10 | Train loss 0.4476 acc 0.7772 | Val loss 0.3248 acc 0.8575
+ViT-L-16 | Fold 5 | Epoch 02/10 | Train loss 0.2714 acc 0.8899 | Val loss 0.2279 acc 0.9032
+ViT-L-16 | Fold 5 | Epoch 03/10 | Train loss 0.2188 acc 0.9202 | Val loss 0.1905 acc 0.9299
+ViT-L-16 | Fold 5 | Epoch 04/10 | Train loss 0.1827 acc 0.9378 | Val loss 0.1760 acc 0.9413
+ViT-L-16 | Fold 5 | Epoch 05/10 | Train loss 0.1551 acc 0.9512 | Val loss 0.1531 acc 0.9516
+ViT-L-16 | Fold 5 | Epoch 06/10 | Train loss 0.1359 acc 0.9605 | Val loss 0.1237 acc 0.9633
+ViT-L-16 | Fold 5 | Epoch 07/10 | Train loss 0.1156 acc 0.9708 | Val loss 0.1211 acc 0.9658
+ViT-L-16 | Fold 5 | Epoch 08/10 | Train loss 0.1030 acc 0.9760 | Val loss 0.1079 acc 0.9730
+ViT-L-16 | Fold 5 | Epoch 09/10 | Train loss 0.0950 acc 0.9796 | Val loss 0.1051 acc 0.9763
+ViT-L-16 | Fold 5 | Epoch 10/10 | Train loss 0.0922 acc 0.9824 | Val loss 0.1002 acc 0.9763

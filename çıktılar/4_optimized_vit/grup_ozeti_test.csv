@@ -1,0 +1,6 @@
+Group,Model,Split,Accuracy,Precision,Recall (Sensitivity),Specificity,F1-Score,ROC-AUC
+optimized_vit,ViT-B-16,Test,98.66 ± 0.15,99.10 ± 0.13,98.20 ± 0.18,99.11 ± 0.13,98.65 ± 0.15,99.91 ± 0.02
+optimized_vit,ViT-B-32,Test,98.77 ± 0.21,99.08 ± 0.19,98.45 ± 0.55,99.09 ± 0.20,98.76 ± 0.21,99.93 ± 0.03
+optimized_vit,ViT-L-16,Test,97.86 ± 0.21,98.47 ± 0.38,97.23 ± 0.51,98.49 ± 0.39,97.84 ± 0.22,99.81 ± 0.03
+optimized_vit,ViT-L-32,Test,98.44 ± 0.12,98.96 ± 0.30,97.91 ± 0.26,98.97 ± 0.30,98.43 ± 0.12,99.88 ± 0.05
+optimized_vit,Swin-T,Test,95.52 ± 0.29,95.40 ± 0.80,95.65 ± 0.69,95.38 ± 0.86,95.52 ± 0.28,99.20 ± 0.08

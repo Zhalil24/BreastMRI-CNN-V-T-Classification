@@ -1,0 +1,10 @@
+MobileNetV2 | Fold 5 | Epoch 01/10 | Train loss 0.4377 acc 0.7828 | Val loss 0.2408 acc 0.9037
+MobileNetV2 | Fold 5 | Epoch 02/10 | Train loss 0.2632 acc 0.8945 | Val loss 0.1713 acc 0.9469
+MobileNetV2 | Fold 5 | Epoch 03/10 | Train loss 0.1955 acc 0.9347 | Val loss 0.1589 acc 0.9413
+MobileNetV2 | Fold 5 | Epoch 04/10 | Train loss 0.1619 acc 0.9500 | Val loss 0.1038 acc 0.9769
+MobileNetV2 | Fold 5 | Epoch 05/10 | Train loss 0.1327 acc 0.9653 | Val loss 0.0957 acc 0.9755
+MobileNetV2 | Fold 5 | Epoch 06/10 | Train loss 0.1159 acc 0.9736 | Val loss 0.1052 acc 0.9755
+MobileNetV2 | Fold 5 | Epoch 07/10 | Train loss 0.1025 acc 0.9793 | Val loss 0.0818 acc 0.9861
+MobileNetV2 | Fold 5 | Epoch 08/10 | Train loss 0.0917 acc 0.9848 | Val loss 0.0727 acc 0.9900
+MobileNetV2 | Fold 5 | Epoch 09/10 | Train loss 0.0845 acc 0.9872 | Val loss 0.0687 acc 0.9917
+MobileNetV2 | Fold 5 | Epoch 10/10 | Train loss 0.0817 acc 0.9886 | Val loss 0.0674 acc 0.9930

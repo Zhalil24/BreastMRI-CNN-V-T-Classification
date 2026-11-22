@@ -1,0 +1,10 @@
+ResNet34 | Fold 3 | Epoch 01/10 | Train loss 0.4485 acc 0.7780 | Val loss 0.2241 acc 0.9090
+ResNet34 | Fold 3 | Epoch 02/10 | Train loss 0.2588 acc 0.8936 | Val loss 0.2734 acc 0.8862
+ResNet34 | Fold 3 | Epoch 03/10 | Train loss 0.1886 acc 0.9332 | Val loss 0.1309 acc 0.9580
+ResNet34 | Fold 3 | Epoch 04/10 | Train loss 0.1519 acc 0.9528 | Val loss 0.0987 acc 0.9814
+ResNet34 | Fold 3 | Epoch 05/10 | Train loss 0.1217 acc 0.9673 | Val loss 0.0834 acc 0.9855
+ResNet34 | Fold 3 | Epoch 06/10 | Train loss 0.1027 acc 0.9772 | Val loss 0.0663 acc 0.9911
+ResNet34 | Fold 3 | Epoch 07/10 | Train loss 0.0893 acc 0.9828 | Val loss 0.0684 acc 0.9878
+ResNet34 | Fold 3 | Epoch 08/10 | Train loss 0.0753 acc 0.9899 | Val loss 0.0549 acc 0.9947
+ResNet34 | Fold 3 | Epoch 09/10 | Train loss 0.0702 acc 0.9924 | Val loss 0.0584 acc 0.9961
+ResNet34 | Fold 3 | Epoch 10/10 | Train loss 0.0653 acc 0.9945 | Val loss 0.0584 acc 0.9967

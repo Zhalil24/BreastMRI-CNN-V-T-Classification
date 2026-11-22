@@ -1,0 +1,10 @@
+DenseNet121 | Fold 1 | Epoch 01/10 | Train loss 0.4117 acc 0.7953 | Val loss 0.2068 acc 0.9232
+DenseNet121 | Fold 1 | Epoch 02/10 | Train loss 0.2251 acc 0.9152 | Val loss 0.1467 acc 0.9496
+DenseNet121 | Fold 1 | Epoch 03/10 | Train loss 0.1675 acc 0.9456 | Val loss 0.1062 acc 0.9694
+DenseNet121 | Fold 1 | Epoch 04/10 | Train loss 0.1387 acc 0.9610 | Val loss 0.0873 acc 0.9758
+DenseNet121 | Fold 1 | Epoch 05/10 | Train loss 0.1165 acc 0.9719 | Val loss 0.0758 acc 0.9917
+DenseNet121 | Fold 1 | Epoch 06/10 | Train loss 0.0962 acc 0.9815 | Val loss 0.0702 acc 0.9905
+DenseNet121 | Fold 1 | Epoch 07/10 | Train loss 0.0836 acc 0.9866 | Val loss 0.0578 acc 0.9944
+DenseNet121 | Fold 1 | Epoch 08/10 | Train loss 0.0742 acc 0.9911 | Val loss 0.0549 acc 0.9961
+DenseNet121 | Fold 1 | Epoch 09/10 | Train loss 0.0713 acc 0.9926 | Val loss 0.0540 acc 0.9978
+DenseNet121 | Fold 1 | Epoch 10/10 | Train loss 0.0668 acc 0.9947 | Val loss 0.0545 acc 0.9978

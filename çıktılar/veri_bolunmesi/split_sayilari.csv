@@ -1,0 +1,4 @@
+,train,val,test
+Benign,8413,1797,1802
+Malignant,8413,1797,1802
+Toplam,16826,3594,3604

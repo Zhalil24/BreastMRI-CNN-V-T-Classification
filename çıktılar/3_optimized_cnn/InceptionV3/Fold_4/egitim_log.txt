@@ -1,0 +1,10 @@
+InceptionV3 | Fold 4 | Epoch 01/10 | Train loss 0.4142 acc 0.7931 | Val loss 0.2263 acc 0.9107
+InceptionV3 | Fold 4 | Epoch 02/10 | Train loss 0.2288 acc 0.9126 | Val loss 0.1371 acc 0.9572
+InceptionV3 | Fold 4 | Epoch 03/10 | Train loss 0.1662 acc 0.9433 | Val loss 0.1328 acc 0.9591
+InceptionV3 | Fold 4 | Epoch 04/10 | Train loss 0.1339 acc 0.9623 | Val loss 0.0914 acc 0.9789
+InceptionV3 | Fold 4 | Epoch 05/10 | Train loss 0.1103 acc 0.9736 | Val loss 0.0944 acc 0.9783
+InceptionV3 | Fold 4 | Epoch 06/10 | Train loss 0.0952 acc 0.9806 | Val loss 0.0817 acc 0.9880
+InceptionV3 | Fold 4 | Epoch 07/10 | Train loss 0.0800 acc 0.9876 | Val loss 0.0734 acc 0.9889
+InceptionV3 | Fold 4 | Epoch 08/10 | Train loss 0.0666 acc 0.9935 | Val loss 0.0630 acc 0.9947
+InceptionV3 | Fold 4 | Epoch 09/10 | Train loss 0.0655 acc 0.9941 | Val loss 0.0634 acc 0.9947
+InceptionV3 | Fold 4 | Epoch 10/10 | Train loss 0.0623 acc 0.9954 | Val loss 0.0622 acc 0.9961
